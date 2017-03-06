@@ -22,15 +22,12 @@
  */
 package io.github.gatling.cql.request
 
-import io.gatling.core.action.Action
-import io.gatling.core.action.builder.ActionBuilder
-import io.gatling.core.structure.ScenarioContext
-import io.gatling.core.util.NameGen
+import io.gatling.core.protocol.ProtocolComponents
+import io.gatling.core.session.Session
 
-class CqlRequestActionBuilder(attr: CqlAttributes) extends ActionBuilder with NameGen {
+case class CqlComponents(cqlProtocol: CqlProtocol) extends ProtocolComponents {
 
-  def build(ctx: ScenarioContext, next: Action): Action = {
-    val cqlProtocol = ctx.protocolComponentsRegistry.components(CqlProtocol.CqlProtocolKey).cqlProtocol
-    new CqlRequestAction(genName("CQL:" + attr.tag), next, ctx.system, ctx.coreComponents.statsEngine, cqlProtocol, attr)
-  }
+  def onStart: Option[Session => Session] = None
+
+  def onExit: Option[Session => Unit] = None
 }
