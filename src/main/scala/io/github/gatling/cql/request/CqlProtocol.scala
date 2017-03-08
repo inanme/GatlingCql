@@ -23,10 +23,11 @@
 package io.github.gatling.cql.request
 
 import akka.actor.ActorSystem
-import com.datastax.driver.core.Session
+import com.datastax.driver.core.{Session => CqlSession}
 import io.gatling.core.CoreComponents
 import io.gatling.core.config.GatlingConfiguration
-import io.gatling.core.protocol.{Protocol, ProtocolKey}
+import io.gatling.core.protocol.{Protocol, ProtocolComponents, ProtocolKey}
+import io.gatling.core.session.Session
 
 object CqlProtocol {
   val CqlProtocolKey = new ProtocolKey {
@@ -43,4 +44,11 @@ object CqlProtocol {
 }
 
 //holds reference to a cluster, just settings
-case class CqlProtocol(session: Session) extends Protocol
+case class CqlProtocol(session: CqlSession) extends Protocol
+
+case class CqlComponents(cqlProtocol: CqlProtocol) extends ProtocolComponents {
+
+  def onStart: Option[Session => Session] = None
+
+  def onExit: Option[Session => Unit] = None
+}
