@@ -24,7 +24,7 @@ package io.github.gatling.cql
 
 import io.gatling.core.action.builder.ActionBuilder
 import io.github.gatling.cql.checks.CqlCheckSupport
-import io.github.gatling.cql.request.{CqlProtocolBuilder, CqlProtocol, CqlRequestBuilderBase, CqlRequestBuilder}
+import io.github.gatling.cql.request.{CqlProtocol, CqlProtocolBuilder, CqlRequestBuilder, CqlRequestBuilderBase}
 
 object Predef extends CqlCheckSupport {
   val cql = CqlProtocolBuilder
