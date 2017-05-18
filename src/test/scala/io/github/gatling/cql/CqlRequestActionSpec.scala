@@ -69,7 +69,7 @@ class CqlRequestActionSpec extends FlatSpec with EasyMockSugar with Matchers wit
       target.execute(session)
     }
     val captureErrorMessage = errorMessageCapture.getValue
-    captureErrorMessage.get should be("Error setting up prepared statement: OOPS")
+    captureErrorMessage.get should be("Error setting up statement: OOPS")
   }
 
   it should "execute a valid statement" in {

@@ -33,11 +33,21 @@ trait CqlStatement {
   def apply(session:Session): Validation[Statement]
 }
 
-
 case class SimpleCqlStatement(statement: Expression[String]) extends CqlStatement {
   def apply(session: Session): Validation[Statement] = statement(session).flatMap(stmt => new SimpleStatement(stmt).success)
 }
 
+case class SimpleCqlStatementWithParams(statement: Expression[String], parameters: Expression[Seq[AnyRef]]) extends CqlStatement {
+  def apply(session:Session): Validation[Statement] = {
+    statement(session).flatMap(
+      stmt => {
+        parameters(session).flatMap(
+          params => new SimpleStatement(stmt, params.map(p => p): _*).success
+        )
+      }
+    )
+  }
+}
 
 case class BoundCqlStatement(statement: PreparedStatement, params: Expression[AnyRef]*) extends CqlStatement {
   def apply(session:Session): Validation[Statement] = {
