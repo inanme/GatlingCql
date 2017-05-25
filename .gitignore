@@ -45,3 +45,5 @@ build.log
 #release files
 pom.xml.releaseBackup
 release.properties
+
+.DS_Store
