@@ -54,9 +54,11 @@ class CqlCompileTest extends Simulation {
   val random = new util.Random
   val feeder = Iterator.continually(
       Map(
-          "randomString" -> random.nextString(20),
-          "randomNum" -> random.nextInt()
-          ))
+        "randomString" -> random.nextString(20),
+        "randomNum" -> random.nextInt(),
+        "randomParams" -> Seq[AnyRef](Integer.valueOf(random.nextInt()), random.nextString(20))
+      )
+  )
 
   val scn = scenario("Two statements").repeat(1) {
     feed(feeder)
@@ -92,6 +94,11 @@ class CqlCompileTest extends Simulation {
         .execute(prepared)
         .withParams(Integer.valueOf(random.nextInt()), "${randomString}")
         .consistencyLevel(ConsistencyLevel.ANY)
+    )
+
+    .exec(cql("adhoc statements with params")
+      .execute("INSERT INTO $table_name (id, num, str) values (now(), ?, ?)", "${randomParams}")
+      .consistencyLevel(ConsistencyLevel.ANY)
     )
   }
 

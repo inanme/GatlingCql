@@ -27,16 +27,17 @@ import com.datastax.driver.core.{ConsistencyLevel, PreparedStatement}
 import io.gatling.core.action.builder.ActionBuilder
 import io.gatling.core.session.Expression
 
-import io.github.gatling.cql.{SimpleCqlStatement, BoundCqlStatement}
+import io.github.gatling.cql.{SimpleCqlStatement, SimpleCqlStatementWithParams, BoundCqlStatement}
 import io.github.gatling.cql.checks.CqlCheck
 
 
 case class CqlRequestBuilderBase(tag: String) {
   def execute(statement: Expression[String]) = CqlRequestBuilder(CqlAttributes(tag, SimpleCqlStatement(statement)))
-  def execute(prepared: PreparedStatement) = CqlRequestParamsBuilder(tag, prepared)
+  def execute(statement: Expression[String], params: Expression[Seq[AnyRef]]) = CqlRequestBuilder(CqlAttributes(tag, SimpleCqlStatementWithParams(statement, params)))
+  def execute(prepared: PreparedStatement) = CqlPreparedRequestParamsBuilder(tag, prepared)
 }
 
-case class CqlRequestParamsBuilder(tag: String, prepared: PreparedStatement) {
+case class CqlPreparedRequestParamsBuilder(tag: String, prepared: PreparedStatement) {
   def withParams(params: Expression[AnyRef]*) = CqlRequestBuilder(CqlAttributes(tag, BoundCqlStatement(prepared, params: _*)))
 }
 

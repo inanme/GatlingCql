@@ -11,9 +11,9 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <encoding>UTF-8</encoding>
         <scala.version>2.11.8</scala.version>
-        <gatling.version>2.2.3</gatling.version>
-        <gatling.maven-plugin.version>2.2.0</gatling.maven-plugin.version>
-        <cassandra-driver.version>3.1.1</cassandra-driver.version>
+        <gatling.version>2.2.4</gatling.version>
+        <gatling.maven-plugin.version>2.2.4</gatling.maven-plugin.version>
+        <cassandra-driver.version>3.2.0</cassandra-driver.version>
     </properties>
 
     <dependencies>
@@ -23,10 +23,12 @@
             <version>${scala.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
             <version>${cassandra-driver.version}</version>
+            <classifier>shaded</classifier>
             <exclusions>
                 <!-- Provided by Gatling -->
                 <exclusion>
@@ -43,18 +45,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>io.gatling.highcharts</groupId>
             <artifactId>gatling-charts-highcharts</artifactId>
             <version>${gatling.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.11</artifactId>
             <version>2.2.4</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
