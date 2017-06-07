@@ -51,7 +51,7 @@ case class SimpleCqlStatementWithParams(statement: Expression[String], parameter
 
 case class BoundCqlStatement(statement: PreparedStatement, params: Expression[AnyRef]*) extends CqlStatement {
   def apply(session:Session): Validation[Statement] = {
-    val parsedParams = params.map(param => param(session))
+    val parsedParams = params.map(param => if (param != null) param(session) else Success(null))
     val (validParsedParams, failures) = parsedParams.partition {case Success(s) => true; case _ => false}
     failures.toList match {
       case x :: xs => x match {

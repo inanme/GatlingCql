@@ -57,4 +57,11 @@ class PreparedCqlStatementSpec extends FlatSpec with EasyMockSugar with Matchers
     val session = new Session("name", 1, Map("fu" -> Integer.valueOf(5), "buz" -> "BaZ"))
     target(session) shouldBe "No attribute named 'foo' is defined".failure
   }
+
+  it should "handle null parameters correctly" in {
+    val session = new Session("name", 1)
+    val statementWithNull = BoundCqlStatement(prepared, null)
+
+    statementWithNull(session) shouldBe a[Success[_]]
+  }
 }
